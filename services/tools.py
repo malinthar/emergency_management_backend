@@ -4,10 +4,27 @@ import os
 from typing import Dict, List, Optional, Any, Union
 import openai
 from pydantic import BaseModel
+from enum import Enum
 
 from dotenv import load_dotenv
 
 load_dotenv()
+
+class EmergencyServiceType(str, Enum):
+    """Types of emergency services that can be alerted"""
+    AMBULANCE = "ambulance"
+    FIRE = "fire" 
+    POLICE = "police"
+    MEDEVAC = "medevac"
+    COASTGUARD = "coastguard"
+    MOUNTAIN_RESCUE = "mountain_rescue"
+    HAZMAT = "hazmat"
+    MENTAL_HEALTH = "mentalhealth"
+    ANIMAL_CONTROL = "animal_control"
+    DISASTER_RESPONSE = "disaster_response"
+    FOOD_BANK = "foodbank"
+    SHELTER = "shelter"
+    OTHER = "other"
 
 class PersonProfile(BaseModel):
     age: Optional[str] = None
@@ -20,7 +37,7 @@ class Location(BaseModel):
     coordinates: Optional[str] = None
 
 class ExtractedEmergencyData(BaseModel):
-    emergency_type: str  # Type of emergency (fire, flood, medical emergency, etc.)
+    emergency_type: EmergencyServiceType  # Type of emergency (fire, ambulance, police, etc.)
     person_profile: Optional[PersonProfile] = None
     location: Optional[Location] = None
     time_of_incident: Optional[str] = None
@@ -200,8 +217,10 @@ class EmergencyTools:
         # In a production environment, this would integrate with emergency service APIs
         try:
             print(f"Received request: {emergency_data}")
-            service_type = emergency_data.emergency_type
+            emergency_type = emergency_data.emergency_type
             severity = emergency_data.severity
+            
+           
             
             # Simulate different response times based on severity
             response_times = {
@@ -214,7 +233,7 @@ class EmergencyTools:
             
             response = {
                 "alert_sent": True,
-                "service_alerted": service_type,
+                "service_alerted": emergency_type,
                 "severity_reported": severity,
                 "estimated_response_time": response_times.get(severity, "unknown"),
                 "alert_time": datetime.datetime.now().isoformat(),
