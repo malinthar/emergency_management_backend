@@ -1,13 +1,18 @@
 from flask import Flask, request, jsonify
 from services.ai_service import AIService
+from flask_cors import CORS  # Import CORS to handle cross-origin requests
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+
 ai_service = AIService()
 
 @app.route('/api/query', methods=['POST'])
 def process_user_query():
     try:
+        print("Received request to process user query")
         data = request.get_json()
+        print(f"Received data: {data}")
         
         if not data or 'query' not in data:
             return jsonify({'error': 'Query is required'}), 400
