@@ -9,13 +9,14 @@ from langchain.tools import StructuredTool
 from lib.constants import SYSTEM_PROMPT_DATA_EXTRACT
 from services.tools import EmergencyTools
 import os
+from services.tools import EmergencyServiceType
 
 load_dotenv()
 
 class EmergencyResponse(BaseModel):
     response_message: str
-    emergency_type: Optional[str] = None
-    resources_alerted: Optional[List[str]] = None
+    emergency_type: Optional[EmergencyServiceType] = None
+    resources_alerted: Optional[List[EmergencyServiceType]] = None
     additional_notes: Optional[str] = None
     
 class AIService:
