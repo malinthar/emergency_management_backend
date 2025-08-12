@@ -1,11 +1,19 @@
 from flask import Flask, request, jsonify
 from services.ai_service import AIService
 from flask_cors import CORS  # Import CORS to handle cross-origin requests
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 ai_service = AIService()
+
+secret_key = os.getenv("OPEN_AI_KEY")
+
+print(secret_key)
+
+
 
 #Example JSON Body for using api/query
 #For MVP only required field is query 
