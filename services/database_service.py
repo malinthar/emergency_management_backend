@@ -40,7 +40,7 @@ class EmergencyResponseDB(Base):
     resources_needed = Column(JSON, nullable=False) # list stored as JSON
     additional_notes = Column(String)
 
-# # Create the table(s) in DB (run once)
+# # Create the table in DB (run frst time only)
 # Base.metadata.create_all(bind=engine)
 
 # Save an EmergencyResponse Pydantic object to DB
@@ -55,17 +55,22 @@ def save_emergency(data: EmergencyResponse) -> EmergencyResponseDB:
     finally:
         db.close()
 
-# Example usage (uncomment to test)
-# response = EmergencyResponse(
-#     emergency_type="Fire",
-#     person_profile={"age": "45", "gender": "Male", "medical_conditions": "Asthma"},
-#     location={"address": "123 Main St", "landmarks": "Near park", "coordinates": "40.7128,-74.0060"},
-#     time_of_incident="2025-08-12T14:00:00Z",
-#     people_affected=3,
-#     immediate_risks=["Smoke inhalation", "Structural collapse"],
-#     resources_needed=["Firetruck", "Ambulance"],
-#     additional_notes="Caller reports trapped individuals"
-# )
-# saved = save_emergency(response)
-# print(saved.id, saved.emergency_type)
+#Just to test it works/show how to use
+def testDB():
+    response = EmergencyResponse(
+    emergency_type="Fire",
+    person_profile={"age": "45", "gender": "Male", "medical_conditions": "Asthma"},
+    location={"address": "123 Main St", "landmarks": "Near park", "coordinates": "40.7128,-74.0060"},
+    time_of_incident="2025-08-12T14:00:00Z",
+    people_affected=3,
+    immediate_risks=["Smoke inhalation", "Structural collapse"],
+    resources_needed=["Firetruck", "Ambulance"],
+    additional_notes="Caller reports trapped individuals"
+    )
+
+    saved = save_emergency(response)
+    print(saved.id, saved.emergency_type)
+
+# testDB()
+
 
