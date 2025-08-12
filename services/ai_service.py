@@ -11,25 +11,13 @@ from services.tools import EmergencyTools
 import os
 
 load_dotenv()
+
 class EmergencyResponse(BaseModel):
     response_message: str
-    emergency_type: str  # Type of emergency (fire, flood, medical emergency, etc.)
-    person_profile: dict = {  # Information about the affected person(s)
-        "age": str,
-        "gender": str,
-        "medical_conditions": str
-    }
-    location: dict = {  # Location details
-        "address": str,
-        "landmarks": str,
-        "coordinates": str
-    }
-    time_of_incident: str
-    people_affected: int
-    immediate_risks: list[str]
-    resources_needed: list[str]
-    additional_notes: str
-
+    emergency_type: Optional[str] = None
+    resources_alerted: Optional[List[str]] = None
+    additional_notes: Optional[str] = None
+    
 class AIService:
     """
     Service to handle AI-related operations.
@@ -67,35 +55,40 @@ class AIService:
         extract_data_tool = StructuredTool.from_function(
             func=EmergencyTools.extract_emergency_data,
             name="extract_emergency_data",
-            description="Extract structured data from an emergency transcript or message"
+            description="Extract structured data from an emergency transcript or message",
+            return_direct=False
         )
         
         # 2. Alert emergency services tool
         alert_services_tool = StructuredTool.from_function(
             func=EmergencyTools.alert_emergency_services,
             name="alert_emergency_services",
-            description="Alert relevant emergency services based on the emergency data"
+            description="Alert relevant emergency services based on the emergency data",
+            return_direct=False
         )
         
         # 3. Report generation tool
         generate_report_tool = StructuredTool.from_function(
             func=EmergencyTools.generate_report,
             name="generate_report",
-            description="Generate a comprehensive report of the emergency and response"
+            description="Generate a comprehensive report of the emergency and response",
+            return_direct=False
         )
         
         # 4. Find next steps tool
         next_steps_tool = StructuredTool.from_function(
             func=EmergencyTools.find_next_steps,
             name="find_next_steps",
-            description="Determine recommended next steps based on emergency data"
+            description="Determine recommended next steps based on emergency data",
+            return_direct=False
         )
         
         # 5. Translation tool
         translation_tool = StructuredTool.from_function(
             func=EmergencyTools.translate_to_language,
             name="translate_to_language",
-            description="Translate text to the specified language"
+            description="Translate text to the specified language",
+            return_direct=False
         )
         
         return [
