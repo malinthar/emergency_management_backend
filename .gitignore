@@ -2,5 +2,32 @@
 .env
 __pycache__
 .DS_Store
-venv
 .env
+
+# ignore pycache files in lib and services directories
+lib/__pycache__
+services/__pycache__
+
+# Python bytecode files
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
