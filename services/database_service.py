@@ -7,6 +7,7 @@ from typing import List, Dict
 from dotenv import load_dotenv
 
 
+
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URI")  
@@ -17,7 +18,7 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 # ----------------------
-# Pydantic model
+# Pydantic model hi manu these are copied straight from your services file
 # ----------------------
 class EmergencyResponse(BaseModel):
     emergency_type: str
@@ -74,7 +75,7 @@ class EmergencyResponseDB(Base):
 
 
 # ----------------------
-# Create Tables (Dev Only)
+# Create Tables (Dev Only) these can delet old stuff
 # # ----------------------
 # Base.metadata.drop_all(bind=engine)   # Dev only — wipes DB
 # Base.metadata.create_all(bind=engine) # Creates all tables with current models
@@ -125,37 +126,37 @@ def save_report_to_db(report_data: dict):
 
 # ----------------------
 # Test Functions
-# ----------------------
-def testDB():
-    db = SessionLocal()
-    try:
-        raw_query = RawQuery(
-            query={"text": "Help! Fire at 123 Main St."},
-            transcript="Help fire at one two three Main Street",
-            response=None
-        )
-        db.add(raw_query)
-        db.commit()
-        db.refresh(raw_query)
+# # ----------------------
+# def testDB():
+#     db = SessionLocal()
+#     try:
+#         raw_query = RawQuery(
+#             query={"text": "Help! Fire at 123 Main St."},
+#             transcript="Help fire at one two three Main Street",
+#             response=None
+#         )
+#         db.add(raw_query)
+#         db.commit()
+#         db.refresh(raw_query)
 
-        response = EmergencyResponse(
-            emergency_type="Fire",
-            person_profile={"age": "45", "gender": "Male", "medical_conditions": "Asthma"},
-            location={"address": "123 Main St", "landmarks": "Near park", "coordinates": "40.7128,-74.0060"},
-            time_of_incident="2025-08-12T14:00:00Z",
-            people_affected=3,
-            immediate_risks=["Smoke inhalation", "Structural collapse"],
-            resources_needed=["Firetruck", "Ambulance"],
-            additional_notes="Caller reports trapped individuals",
-            severity="high"
-        )
+#         response = EmergencyResponse(
+#             emergency_type="Fire",
+#             person_profile={"age": "45", "gender": "Male", "medical_conditions": "Asthma"},
+#             location={"address": "123 Main St", "landmarks": "Near park", "coordinates": "40.7128,-74.0060"},
+#             time_of_incident="2025-08-12T14:00:00Z",
+#             people_affected=3,
+#             immediate_risks=["Smoke inhalation", "Structural collapse"],
+#             resources_needed=["Firetruck", "Ambulance"],
+#             additional_notes="Caller reports trapped individuals",
+#             severity="high"
+#         )
 
-        saved = save_emergency(response, raw_query_id=raw_query.id)
+#         saved = save_emergency(response, raw_query_id=raw_query.id)
 
-        print(f"RawQuery ID: {raw_query.id}")
-        print(f"Saved EmergencyResponse ID: {saved.id}, Type: {saved.emergency_type}")
-    finally:
-        db.close()
+#         print(f"RawQuery ID: {raw_query.id}")
+#         print(f"Saved EmergencyResponse ID: {saved.id}, Type: {saved.emergency_type}")
+#     finally:
+#         db.close()
 
 
 # def test_full_flow():
@@ -199,3 +200,6 @@ def testDB():
 
 # # Run test
 # test_full_flow()
+
+
+
