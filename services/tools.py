@@ -4,6 +4,8 @@ import os
 from typing import Dict, List, Optional, Any, Union
 import openai
 from pydantic import BaseModel
+from services.database_service import save_report_to_db
+
 
 from dotenv import load_dotenv
 
@@ -250,6 +252,11 @@ class EmergencyTools:
                 "response_details": response_data if response_data else {},
                 "status": "open"
             }
+            
+
+            print("\n\nSaving report to database...\n\n")
+
+            save_report_to_db(report)
             
             return report
             
